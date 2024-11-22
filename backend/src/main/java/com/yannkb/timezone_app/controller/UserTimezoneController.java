@@ -24,7 +24,7 @@ public class UserTimezoneController {
         return userTimezoneService.getAllAvailableTimezones();
     }
 
-    @PostMapping
+    @PostMapping("/")
     public UserTimezone createUserTimezone(@RequestBody TimezoneRequest request) {
         return userTimezoneService.save(request.getLabel(), request.getZoneId());
     }

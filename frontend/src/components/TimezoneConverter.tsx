@@ -100,6 +100,14 @@ const Result = styled.div`
   }
 `;
 
+const InfoMessage = styled.div`
+  padding: ${props => props.theme.spacing.lg};
+  background: ${props => props.theme.colors.info};
+  color: ${props => props.theme.colors.text.primary};
+  border-radius: ${props => props.theme.borderRadius.md};
+  margin-bottom: ${props => props.theme.spacing.lg};
+`;
+
 export function TimezoneConverter() {
     const { availableTimezones, timezones, convertTimezone } = useTimezones();
 
@@ -118,6 +126,11 @@ export function TimezoneConverter() {
     return (
         <Section title="Convert Time">
             <Container>
+                {(!availableTimezones.length || !timezones.length) && (
+                    <InfoMessage>
+                        Please add some timezones in the timezone management section before attempting to convert times.
+                    </InfoMessage>
+                )}
                 <Form onSubmit={handleSubmit(onSubmit)}>
                     <FormGroup>
                         <Label htmlFor="source-timezone">Source Timezone</Label>

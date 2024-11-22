@@ -5,7 +5,7 @@ To build and run the services:
 2. Open a terminal in the root directory
 3. Run:
 ``` bash
-docker-compose up -- build
+docker-compose up --build
 ```
 This will:
 - Build both frontend and backend Docker images

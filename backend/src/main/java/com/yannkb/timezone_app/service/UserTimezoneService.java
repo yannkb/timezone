@@ -5,7 +5,10 @@ import com.yannkb.timezone_app.repository.UserTimezoneRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.*;
 
 @Service
 public class UserTimezoneService {
@@ -13,8 +16,36 @@ public class UserTimezoneService {
     @Autowired
     private UserTimezoneRepository userTimezoneRepository;
 
-    public UserTimezone save(UserTimezone userTimezone) {
-        return userTimezoneRepository.save(userTimezone);
+    public List<String> getAllAvailableTimezones() {
+        return new ArrayList<>(ZoneId.getAvailableZoneIds());
+    }
+
+    public Map<String, String> getTimezoneDetails(String zoneId) {
+        ZoneId zone = ZoneId.of(zoneId);
+        ZonedDateTime now = ZonedDateTime.now(zone);
+
+        Map<String, String> details = new HashMap<>();
+        details.put("id", zone.getId());
+        details.put("utcOffset", now.getOffset().getId().replace("Z", "+00:00"));
+        details.put("region", zone.getId().split("/")[0]);
+
+        return details;
+    }
+
+    public UserTimezone save(String label, String zoneId) {
+        Map<String, String> details = getTimezoneDetails(zoneId);
+
+        return userTimezoneRepository.save(new UserTimezone(
+                label,
+                zoneId,
+                details.get("utcOffset"),
+                details.get("region")
+        ));
+    }
+
+    public ZonedDateTime convertTime(String sourceZoneId, LocalDateTime dateTime, String targetZoneId) {
+        return dateTime.atZone(ZoneId.of(sourceZoneId))
+                .withZoneSameInstant(ZoneId.of(targetZoneId));
     }
 
     public Optional<UserTimezone> findById(Long id) {

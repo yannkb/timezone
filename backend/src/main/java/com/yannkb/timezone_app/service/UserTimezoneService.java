@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class UserTimezoneService {
@@ -16,8 +17,26 @@ public class UserTimezoneService {
     @Autowired
     private UserTimezoneRepository userTimezoneRepository;
 
-    public List<String> getAllAvailableTimezones() {
-        return new ArrayList<>(ZoneId.getAvailableZoneIds());
+    public List<Map<String, String>> getAllAvailableTimezones() {
+        return ZoneId.getAvailableZoneIds().stream()
+            .map(zoneId -> {
+                Map<String, String> details = getTimezoneDetails(zoneId);
+                String label = zoneId.contains("/") 
+                    ? zoneId.split("/")[1].replace("_", " ") 
+                    : zoneId;
+                
+                Map<String, String> timezone = new HashMap<>();
+                timezone.put("label", label);
+                timezone.put("zoneId", zoneId);
+                timezone.put("utcOffset", details.get("utcOffset"));
+                timezone.put("region", details.get("region"));
+                
+                return timezone;
+            })
+            .sorted(Comparator.comparing((Map<String, String> tz) -> tz.get("utcOffset"))
+                        .thenComparing(tz -> tz.get("region"))
+                        .thenComparing(tz -> tz.get("label")))
+            .collect(Collectors.toList());
     }
 
     public Map<String, String> getTimezoneDetails(String zoneId) {

@@ -20,7 +20,7 @@ public class UserTimezoneController {
     private UserTimezoneService userTimezoneService;
 
     @GetMapping("/available")
-    public List<String> getAvailableTimezones() {
+    public List<Map<String, String>> getAvailableTimezones() {
         return userTimezoneService.getAllAvailableTimezones();
     }
 
@@ -34,7 +34,7 @@ public class UserTimezoneController {
         return userTimezoneService.findById(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping
+    @GetMapping("/")
     public Iterable<UserTimezone> getAllUserTimezones() {
         return userTimezoneService.findAll();
     }

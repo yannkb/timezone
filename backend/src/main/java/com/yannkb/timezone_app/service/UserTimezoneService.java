@@ -62,9 +62,15 @@ public class UserTimezoneService {
         ));
     }
 
-    public ZonedDateTime convertTime(String sourceZoneId, LocalDateTime dateTime, String targetZoneId) {
-        return dateTime.atZone(ZoneId.of(sourceZoneId))
+    public Map<String, String> convertTime(String sourceZoneId, LocalDateTime dateTime, String targetZoneId) {
+        ZonedDateTime convertedTime = dateTime.atZone(ZoneId.of(sourceZoneId))
                 .withZoneSameInstant(ZoneId.of(targetZoneId));
+        
+        Map<String, String> result = new HashMap<>();
+        result.put("convertedTime", convertedTime.toString());
+        result.put("targetZoneId", targetZoneId);
+        
+        return result;
     }
 
     public Optional<UserTimezone> findById(Long id) {

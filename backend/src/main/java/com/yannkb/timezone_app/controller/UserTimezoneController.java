@@ -53,15 +53,10 @@ public class UserTimezoneController {
 
     @PostMapping("/convert")
     public Map<String, String> convertTime(@RequestBody TimeConversionRequest request) {
-        ZonedDateTime converted = userTimezoneService.convertTime(
+        return userTimezoneService.convertTime(
                 request.getSourceZoneId(),
                 request.getDateTime(),
                 request.getTargetZoneId()
-        );
-
-        return Map.of(
-                "convertedTime", converted.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
-                "offset", converted.getOffset().getId()
         );
     }
 }

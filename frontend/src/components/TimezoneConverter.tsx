@@ -155,7 +155,7 @@ export function TimezoneConverter() {
                             <p>
                                 {format(
                                     new Date(convertTimezone.data.convertedTime.split('[')[0]),
-                                    'EEEE, MMMM d, yyyy h:mm aaa zzz',
+                                    'EEEE, MMMM d, yyyy HH:mm (zzz)',
                                     { timeZone: convertTimezone.data.targetZoneId }
                                 )}
                             </p>

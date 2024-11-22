@@ -76,7 +76,12 @@ public class UserTimezoneService {
     }
 
     public void updateUserTimezone(Long id, UserTimezone userTimezone) {
+        Map<String, String> details = getTimezoneDetails(userTimezone.getZoneId());
+        
         userTimezone.setId(id);
+        userTimezone.setUtcOffset(details.get("utcOffset"));
+        userTimezone.setRegion(details.get("region"));
+        
         userTimezoneRepository.save(userTimezone);
     }
 

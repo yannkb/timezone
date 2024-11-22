@@ -100,12 +100,6 @@ const Result = styled.div`
   }
 `;
 
-const ErrorMessage = styled.span`
-  color: ${props => props.theme.colors.danger};
-  font-size: 0.9rem;
-  margin-top: ${props => props.theme.spacing.xs};
-`;
-
 export function TimezoneConverter() {
     const { availableTimezones, timezones, convertTimezone } = useTimezones();
 

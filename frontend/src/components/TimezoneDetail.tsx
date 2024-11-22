@@ -1,5 +1,5 @@
 import { useParams } from '@tanstack/react-router';
-import { format } from 'date-fns';
+import { format, toZonedTime } from 'date-fns-tz';
 import styled from 'styled-components';
 import { useTimezones } from '../hooks/useTimezones';
 
@@ -76,7 +76,8 @@ export function TimezoneDetail() {
     if (!timezone) return <Container>Timezone not found</Container>;
 
     const now = new Date();
-    const localTime = format(now, 'PPpp');
+    const zonedTime = toZonedTime(now, timezone.zoneId);
+    const localTime = format(zonedTime, 'PPpp', { timeZone: timezone.zoneId });
 
     return (
         <Container>

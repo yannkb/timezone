@@ -1,4 +1,4 @@
-import { format } from 'date-fns';
+import { format, toZonedTime } from 'date-fns-tz';
 import { useTimezones } from '../hooks/useTimezones';
 import styled from 'styled-components';
 import { useState } from 'react';
@@ -117,7 +117,13 @@ export function TimezoneList() {
               <div>
                 <h3>{timezone.label}</h3>
                 <p>{timezone.zoneId}</p>
-                <p>Current time: {format(new Date(), 'PPpp')}</p>
+                <p>Current time: {
+                  format(
+                    toZonedTime(new Date(), timezone.zoneId),
+                    'PPpp',
+                    { timeZone: timezone.zoneId }
+                  )
+                }</p>
               </div>
               <ButtonGroup>
                 <Link to="/timezone/$id" params={{ id: timezone.id?.toString() ?? '' }}>
